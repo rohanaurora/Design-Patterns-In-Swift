@@ -26,11 +26,11 @@ print("Welcome!")
 | [🐝 Chain Of Responsibility](#-chain-of-responsibility) | [🌰 Abstract Factory](#-abstract-factory) | [🔌 Adapter](#-adapter)                   |
 | [👫 Command](#-command)                                 | [👷 Builder](#-builder)                   | [🌉 Bridge](#-bridge)                     |
 | [🎶 Interpreter](#-interpreter)                         | [🏭 Factory Method](#-factory-method)     | [🌿 Composite](#-composite)               |
-| [🍫 Iterator](#-iterator)                               | [🃏 Prototype](#-prototype)               | [🍧 Decorator](#-decorator)               |
-| [💐 Mediator](#-mediator)                               | [💍 Singleton](#-singleton)               | [🎁 Façade](#-fa-ade)                     |
-| [💾 Memento](#-memento)                                 |                                          | [🍃 Flyweight](#-flyweight)               |
-| [👓 Observer](#-observer)                               |                                          | [☔ Protection Proxy](#-protection-proxy) |
-| [🐉 State](#-state)                                     |                                          | [🍬 Virtual Proxy](#-virtual-proxy)       |
+| [🍫 Iterator](#-iterator)                               | [🔂 Monostate](#-monostate)              | [🍧 Decorator](#-decorator)               |
+| [💐 Mediator](#-mediator)                               | [🃏 Prototype](#-prototype)              | [🎁 Façade](#-fa-ade)                     |
+| [💾 Memento](#-memento)                                 | [💍 Singleton](#-singleton)               | [🍃 Flyweight](#-flyweight)               |
+| [👓 Observer](#-observer)                               |                                           | [☔ Protection Proxy](#-protection-proxy) |
+| [🐉 State](#-state)                                     |                                           | [🍬 Virtual Proxy](#-virtual-proxy)       |
 | [💡 Strategy](#-strategy)                               |                                          |                                          |
 | [🏃 Visitor](#-visitor)                                 |                                          |                                          |
 
@@ -706,9 +706,9 @@ protocol Garden {
 extension Garden {
 
     func prepareGarden() {
-        func prepareSoil()
-        func plantSeeds()
-        func waterPlants()
+        prepareSoil()
+        plantSeeds()
+        waterPlants()
     }
 }
 
@@ -719,15 +719,15 @@ final class RoseGarden: Garden {
     }
 
     func prepareSoil() {
-        // Implementation
+        print ("prepare soil for rose garden")
     }
 
     func plantSeeds() {
-        // Implementation
+        print ("plant seeds for rose garden")
     }
 
     func waterPlants() {
-        // Implementation
+       print ("water the rose garden")
     }
 }
 
@@ -1002,6 +1002,47 @@ CurrencyFactory.currency(for: .greece)?.code ?? noCurrencyCode
 CurrencyFactory.currency(for: .spain)?.code ?? noCurrencyCode
 CurrencyFactory.currency(for: .unitedStates)?.code ?? noCurrencyCode
 CurrencyFactory.currency(for: .uk)?.code ?? noCurrencyCode
+```
+
+ 🔂 Monostate
+ ------------
+
+ The monostate pattern is another way to achieve singularity. It works through a completely different mechanism, it enforces the behavior of singularity without imposing structural constraints. 
+ So in that case, monostate saves the state as static instead of the entire instance as a singleton.
+ [SINGLETON and MONOSTATE - Robert C. Martin](http://staff.cs.utu.fi/~jounsmed/doos_06/material/SingletonAndMonostate.pdf)
+
+### Example:
+
+```swift
+struct Settings {
+
+    enum Theme {
+        case .old
+        case .new
+    }
+
+    private static var theme: Theme
+
+    var currentTheme: Theme {
+        get { Settings.theme }
+        set(newTheme) { Settings.theme = newTheme }
+    }
+}
+```
+
+### Usage:
+
+```swift
+
+// When change the theme
+let settings = Settings() // Starts using theme .old
+settings.currentTheme = .new // Change theme to .new
+
+//On screen 1
+let screenColor: Color = Settings().currentTheme == .old ? .gray : .white
+
+//On screen 2
+let screenTitle: String = Settings().currentTheme == .old ? "Itunes Connect" : "App Store Connect"
 ```
 
 🃏 Prototype
